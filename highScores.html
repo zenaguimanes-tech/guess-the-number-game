@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>High scores</title>
     <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
     <div class="container">
         <h1>🏆 High Scores 🏆</h1>
@@ -14,13 +16,13 @@
             </ol>
         </div>
         <div>
-            <button class="back" onclick="playAndNavigate('click', 'game.html')">Back to Menu</button>
+            <button class="back" onclick="playAndNavigate('click', 'index.html')">Back to Menu</button>
         </div>
         <audio id="click" src="sounds/click.mp3"></audio>
     </div>
     <script>
         function goBack() {
-            window.location.href = 'game.html'
+            window.location.href = 'index.html'
         }
         let scores = JSON.parse(localStorage.getItem('highScores')) || [];
         let list = document.querySelector('ol');
@@ -45,4 +47,5 @@
         }
     </script>
 </body>
+
 </html>

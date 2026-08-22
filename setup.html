@@ -25,7 +25,7 @@
             <button class="start" onclick="startGame()">Start Game</button>
         </div>
         <div>
-            <button class="back" onclick="playAndNavigate('click', 'game.html')">Back to Menu</button>
+            <button class="back" onclick="playAndNavigate('click', 'index.html')">Back to Menu</button>
         </div>
         <audio id="click" src="sounds/click.mp3"></audio>
     </div>
@@ -36,18 +36,18 @@
         function selectDifficulty(difficulty) {
             selectedDifficulty = difficulty;
             document.getElementById('message').textContent = `Difficulty: ${difficulty}`;
-            }
+        }
         function goBack() {
-            window.location.href = 'game.html';
+            window.location.href = 'index.html';
         }
         function startGame() {
             let name = document.getElementById('playerName').value;
-    
+
             if (name === '') {
                 document.getElementById('message').textContent = '⚠️ Please enter your name!';
                 return;
             }
-    
+
             if (selectedDifficulty === '') {
                 document.getElementById('message').textContent = '⚠️ Please select a difficulty!';
                 return;
@@ -68,7 +68,7 @@
                 window.location.href = url;
             }, 200);
         }
-        
+
     </script>
 </body>
 

@@ -32,7 +32,7 @@
         </div>
         <div id="messageArea"></div>
         <div>
-            <button class="back" onclick="playAndNavigate('click', 'game.html')">Back</button>
+            <button class="back" onclick="playAndNavigate('click', 'index.html')">Back</button>
         </div>
         <div id="winButtons" style="display: none;">
             <button class="start" onclick="playSound('click'), continueGame()">Continue</button>
@@ -51,7 +51,7 @@
         let difficulty = '';
         let maxNumber = 0;
         let totalScore = 0;
-        let gameOver = false; 
+        let gameOver = false;
         function getGameData() {
             const urlParams = new URLSearchParams(window.location.search);
             playerName = urlParams.get('name');
@@ -61,7 +61,7 @@
             document.getElementById('difficultyDisplay').textContent = difficulty;
         }
         function goBack() {
-            window.location.href = 'game.html';
+            window.location.href = 'index.html';
         }
         function startGame() {
             attempt = 0;
@@ -76,23 +76,23 @@
                 'hard': 200
             }
             let range = maxNumber[difficulty];
-            secretNumber =Math.floor(Math.random() * range) + 1;
+            secretNumber = Math.floor(Math.random() * range) + 1;
             let attempts = maxAttempt[difficulty];
             document.getElementById('messageArea').textContent = `Guess between 1 and ${range}`;
             document.getElementById('attempts').textContent = `${attempt}/${attempts} attempts`;
             document.getElementById('score').textContent = totalScore;
         }
         function makeGuess() {
-            
+
             if (gameOver == true) {
                 document.getElementById('messageArea').textContent = 'You want to play again'
             }
             if (gameOver == false) {
                 let guessNumber = Number(document.getElementById('guessInput').value);
-                attempt += 1 ;
+                attempt += 1;
                 if (!guessNumber) {
-                document.getElementById('messageArea').textContent = 'Please enter a number!';
-                return;
+                    document.getElementById('messageArea').textContent = 'Please enter a number!';
+                    return;
                 }
                 document.getElementById('attempts').textContent = `${attempt}/${maxAttempt[difficulty]} attempts`;
                 document.getElementById('guessInput').value = '';
@@ -111,7 +111,7 @@
                     document.getElementById('score').textContent = totalScore;
                     document.getElementById('winButtons').style.display = 'block';
                     return;
-                } 
+                }
                 if (attempt === maxAttempt[difficulty]) {
                     document.getElementById('messageArea').textContent = `Game over the number was ${secretNumber}`;
                     gameOver = true;
@@ -136,7 +136,7 @@
                 'hard': 200
             }
             let range = maxNumber[difficulty];
-            secretNumber =Math.floor(Math.random() * range) + 1;
+            secretNumber = Math.floor(Math.random() * range) + 1;
             let attempts = maxAttempt[difficulty];
             document.getElementById('messageArea').textContent = `New game started`;
             document.getElementById('attempts').textContent = `${attempt}/${attempts} attempts`;
@@ -149,11 +149,11 @@
                 'medium': 25,
                 'hard': 50,
             }
-            let points =basePoints[difficulty]
+            let points = basePoints[difficulty]
             if (attempt === 1) {
                 points += 10;
             }
-            if (attempt <= maxAttempt / 2){
+            if (attempt <= maxAttempt / 2) {
                 points += 5;
             }
             return points;
@@ -184,7 +184,7 @@
                 'hard': 200
             }
             let range = maxNumber[difficulty];
-            secretNumber =Math.floor(Math.random() * range) + 1;
+            secretNumber = Math.floor(Math.random() * range) + 1;
             let attempts = maxAttempt[difficulty];
             document.getElementById('messageArea').textContent = `New game started`;
             document.getElementById('attempts').textContent = `${attempt}/${attempts} attempts`;
@@ -192,8 +192,8 @@
             document.getElementById('winButtons').style.display = 'none';
         }
         function goBackAndSave() {
-        saveHighScore(playerName, totalScore, difficulty);
-        goBack();
+            saveHighScore(playerName, totalScore, difficulty);
+            goBack();
         }
         function playSound(soundId) {
             let sound = document.getElementById(soundId);
@@ -210,7 +210,7 @@
             playSound('click');
             saveHighScore(playerName, totalScore, difficulty);
             setTimeout(() => {
-                window.location.href = 'game.html';
+                window.location.href = 'index.html';
             }, 200);
         }
 
