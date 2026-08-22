@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>High scores</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>🏆 High Scores 🏆</h1>
+        <div>
+            <ol>
+
+            </ol>
+        </div>
+        <div>
+            <button class="back" onclick="playAndNavigate('click', 'game.html')">Back to Menu</button>
+        </div>
+        <audio id="click" src="sounds/click.mp3"></audio>
+    </div>
+    <script>
+        function goBack() {
+            window.location.href = 'game.html'
+        }
+        let scores = JSON.parse(localStorage.getItem('highScores')) || [];
+        let list = document.querySelector('ol');
+        scores.forEach((score, index) => {
+            let li = document.createElement('li');
+            li.textContent = `${index + 1}. ${score.name} - ${score.score} points (${score.difficulty})`;
+            list.appendChild(li);
+        });
+        if (scores.length === 0) {
+            list.innerHTML = '<li>No high scores yet! Play a game to set one!</li>';
+        }
+        function playSound(soundId) {
+            let sound = document.getElementById(soundId);
+            sound.currentTime = 0;
+            sound.play();
+        }
+        function playAndNavigate(soundId, url) {
+            playSound(soundId);
+            setTimeout(() => {
+                window.location.href = url;
+            }, 200);
+        }
+    </script>
+</body>
+</html>

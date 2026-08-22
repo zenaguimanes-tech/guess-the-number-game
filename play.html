@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Guess the number</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+        <h1>🎯 Guess the Number</h1>
+        <div id="playerInfo">
+            Player: <span id="playerNameDisplay"></span> - <span id="difficultyDisplay"></span>
+        </div>
+        <div>
+            <span id="attempts">0</span>
+        </div>
+        <div>
+            Score: <span id="score">0</span> points
+        </div>
+        <div class="guess-area">
+            <input type="number" id="guessInput" placeholder="Enter your guess">
+            <button class="start" onclick="playSound('click'), makeGuess()">Guess</button>
+        </div>
+        <div>
+            <button class="playagain" onclick="playSound('click'), resetGame()">Play again</button>
+        </div>
+        <div id="messageArea"></div>
+        <div>
+            <button class="back" onclick="playAndNavigate('click', 'game.html')">Back</button>
+        </div>
+        <div id="winButtons" style="display: none;">
+            <button class="start" onclick="playSound('click'), continueGame()">Continue</button>
+            <button class="back" onclick="goBackAndSaveWithSound()">Menu</button>
+        </div>
+        <audio id="correct" src="sounds/correct.mp3"></audio>
+        <audio id="wrong" src="sounds/wrong.mp3"></audio>
+        <audio id="gameover" src="sounds/gameover.mp3"></audio>
+        <audio id="click" src="sounds/click.mp3"></audio>
+    </div>
+    <script>
+        let playerName = '';
+        let secretNumber = Math.random();
+        let attempt = 0;
+        let maxAttempt = 0;
+        let difficulty = '';
+        let maxNumber = 0;
+        let totalScore = 0;
+        let gameOver = false; 
+        function getGameData() {
+            const urlParams = new URLSearchParams(window.location.search);
+            playerName = urlParams.get('name');
+            difficulty = urlParams.get('difficulty');
+
+            document.getElementById('playerNameDisplay').textContent = playerName;
+            document.getElementById('difficultyDisplay').textContent = difficulty;
+        }
+        function goBack() {
+            window.location.href = 'game.html';
+        }
+        function startGame() {
+            attempt = 0;
+            maxAttempt = {
+                'easy': 7,
+                'medium': 7,
+                'hard': 9
+            }
+            maxNumber = {
+                'easy': 50,
+                'medium': 100,
+                'hard': 200
+            }
+            let range = maxNumber[difficulty];
+            secretNumber =Math.floor(Math.random() * range) + 1;
+            let attempts = maxAttempt[difficulty];
+            document.getElementById('messageArea').textContent = `Guess between 1 and ${range}`;
+            document.getElementById('attempts').textContent = `${attempt}/${attempts} attempts`;
+            document.getElementById('score').textContent = totalScore;
+        }
+        function makeGuess() {
+            
+            if (gameOver == true) {
+                document.getElementById('messageArea').textContent = 'You want to play again'
+            }
+            if (gameOver == false) {
+                let guessNumber = Number(document.getElementById('guessInput').value);
+                attempt += 1 ;
+                if (!guessNumber) {
+                document.getElementById('messageArea').textContent = 'Please enter a number!';
+                return;
+                }
+                document.getElementById('attempts').textContent = `${attempt}/${maxAttempt[difficulty]} attempts`;
+                document.getElementById('guessInput').value = '';
+                if (guessNumber > secretNumber) {
+                    playSound('wrong')
+                    document.getElementById('messageArea').textContent = 'Too high'
+                } else if (guessNumber < secretNumber) {
+                    playSound('wrong')
+                    document.getElementById('messageArea').textContent = 'Too low'
+                } else if (guessNumber === secretNumber) {
+                    document.getElementById('messageArea').textContent = `Correct 🎉 the number was ${secretNumber}`;
+                    gameOver = true;
+                    playSound('correct')
+                    let points = calculatePoints(difficulty, attempt, maxAttempt[difficulty]);
+                    totalScore += points;
+                    document.getElementById('score').textContent = totalScore;
+                    document.getElementById('winButtons').style.display = 'block';
+                    return;
+                } 
+                if (attempt === maxAttempt[difficulty]) {
+                    document.getElementById('messageArea').textContent = `Game over the number was ${secretNumber}`;
+                    gameOver = true;
+                    playSound('gameover')
+                    saveHighScore(playerName, totalScore, difficulty);
+                    document.getElementById('score').textContent = 0;
+                    totalScore = 0;
+                    return;
+                }
+            }
+        }
+        function resetGame() {
+            attempt = 0;
+            maxAttempt = {
+                'easy': 7,
+                'medium': 7,
+                'hard': 9
+            }
+            maxNumber = {
+                'easy': 50,
+                'medium': 100,
+                'hard': 200
+            }
+            let range = maxNumber[difficulty];
+            secretNumber =Math.floor(Math.random() * range) + 1;
+            let attempts = maxAttempt[difficulty];
+            document.getElementById('messageArea').textContent = `New game started`;
+            document.getElementById('attempts').textContent = `${attempt}/${attempts} attempts`;
+            gameOver = false;
+            totalScore = 0;
+        }
+        function calculatePoints(difficulty, attempt, maxAttempt) {
+            let basePoints = {
+                'easy': 10,
+                'medium': 25,
+                'hard': 50,
+            }
+            let points =basePoints[difficulty]
+            if (attempt === 1) {
+                points += 10;
+            }
+            if (attempt <= maxAttempt / 2){
+                points += 5;
+            }
+            return points;
+        }
+        function saveHighScore(playerName, score, difficulty) {
+            let scores = localStorage.getItem('highScores');
+            if (scores) {
+                scores = JSON.parse(scores);
+            }
+            if (!scores) {
+                scores = []
+            }
+            scores.push({ name: playerName, score, difficulty });
+            scores.sort((a, b) => b.score - a.score);
+            scores = scores.slice(0, 5);
+            localStorage.setItem('highScores', JSON.stringify(scores));
+        }
+        function continueGame() {
+            attempt = 0;
+            maxAttempt = {
+                'easy': 7,
+                'medium': 7,
+                'hard': 9
+            }
+            maxNumber = {
+                'easy': 50,
+                'medium': 100,
+                'hard': 200
+            }
+            let range = maxNumber[difficulty];
+            secretNumber =Math.floor(Math.random() * range) + 1;
+            let attempts = maxAttempt[difficulty];
+            document.getElementById('messageArea').textContent = `New game started`;
+            document.getElementById('attempts').textContent = `${attempt}/${attempts} attempts`;
+            gameOver = false;
+            document.getElementById('winButtons').style.display = 'none';
+        }
+        function goBackAndSave() {
+        saveHighScore(playerName, totalScore, difficulty);
+        goBack();
+        }
+        function playSound(soundId) {
+            let sound = document.getElementById(soundId);
+            sound.currentTime = 0;
+            sound.play();
+        }
+        function playAndNavigate(soundId, url) {
+            playSound(soundId);
+            setTimeout(() => {
+                window.location.href = url;
+            }, 200);
+        }
+        function goBackAndSaveWithSound() {
+            playSound('click');
+            saveHighScore(playerName, totalScore, difficulty);
+            setTimeout(() => {
+                window.location.href = 'game.html';
+            }, 200);
+        }
+
+        getGameData();
+        startGame();
+    </script>
+</body>
+
+</html>
