@@ -8,6 +8,7 @@
 </head>
 
 <body>
+    <button id="change_mode" onclick="ChangeTheme()">light mode</button>
     <div class="container">
         <h1>🏆 High Scores 🏆</h1>
         <div>
@@ -44,6 +45,22 @@
             setTimeout(() => {
                 window.location.href = url;
             }, 200);
+        }
+        function ChangeTheme() {
+            const isLight = document.body.classList.toggle('light-mode');
+            const btn = document.getElementById('change_mode');
+            if (isLight) {
+                btn.textContent = 'dark mode';
+                localStorage.setItem('theme', 'light');
+            } else {
+                btn.textContent = 'light mode';
+                localStorage.setItem('theme', 'dark');
+            }
+        }
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'light') {
+            document.body.classList.add('light-mode');
+            document.getElementById('change_mode').textContent = 'dark mode';
         }
     </script>
 </body>
