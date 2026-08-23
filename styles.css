@@ -195,42 +195,71 @@ body.light-mode .floatingNumber {
 
 @media (max-width: 600px) {
     .container {
-        margin: 30px 15px;
-        padding: 25px 20px;
+        margin: 20px 10px;
+        padding: 25px 15px;
         max-width: 100%;
+        border-radius: 15px;
+        box-sizing: border-box;
     }
 
     h1 {
-        font-size: 24px;
+        font-size: 28px;
+        word-break: break-word;
+    }
+
+    p {
+        font-size: 18px;
+        margin: 10px 0;
     }
 
     button {
         width: 100%;
-        font-size: 16px;
-        padding: 14px 20px;
-    }
-
-    .guess-area {
-        flex-direction: column;
-        gap: 15px;
+        font-size: 20px;
+        padding: 16px 20px;
+        margin: 8px 0;
+        border-radius: 12px;
+        box-sizing: border-box;
     }
 
     #guessInput {
         width: 100%;
+        padding: 16px 20px;
+        font-size: 20px;
         box-sizing: border-box;
+        border-radius: 12px;
+    }
+
+    .guess-area {
+        flex-direction: column;
+        gap: 12px;
+        width: 100%;
+    }
+
+    .guess-area button {
+        width: 100%;
+    }
+
+    #messageArea,
+    #message {
+        font-size: 20px;
+        padding: 10px;
+    }
+
+    #playerInfo,
+    #attempts,
+    #score {
         font-size: 18px;
     }
 
     #change_mode {
         position: fixed;
-        top: 20px;
-        right: 20px;
-        color: #080000;
-        background-color: #ffffff;
+        top: 12px;
+        right: 12px;
+        padding: 8px 14px;
+        font-size: 14px;
+        border-radius: 30px;
+        width: auto;
         z-index: 999;
-        padding: 10px 18px;
-        border-radius: 50px;
-        font-weight: bold;
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
     }
 
@@ -238,7 +267,15 @@ body.light-mode .floatingNumber {
         display: none;
     }
 
-    #messageArea {
+
+    ol {
+        padding-left: 20px;
         font-size: 18px;
+        text-align: left;
+    }
+
+    ol li {
+        margin: 8px 0;
+        padding: 8px;
     }
 }
